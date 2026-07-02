@@ -50,3 +50,9 @@ function updateTask(id, fields) {
 function deleteTask(id) {
   return airtableRequest('DELETE', { id });
 }
+
+async function fetchSchemaOptions() {
+  const res = await fetch('/.netlify/functions/schema');
+  if (!res.ok) throw new Error(`Schema request failed (${res.status})`);
+  return res.json();
+}

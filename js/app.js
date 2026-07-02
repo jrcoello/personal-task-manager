@@ -2,7 +2,7 @@
 
 let TASKS = [];
 let workloadChart = null;
-let currentBusinessTab = CONFIG.BUSINESSES[0];
+let currentBusinessTab = null;
 let sortField = 'dueDate';
 let sortDir = 'asc';
 
@@ -12,9 +12,26 @@ document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
   cacheEls();
+  await loadSchemaOptions();
+  currentBusinessTab = CONFIG.BUSINESSES[0];
   populateSelects();
   bindEvents();
   await refresh();
+}
+
+// Trae las opciones reales de los campos select desde Airtable (Business,
+// Task Status, Priority) para que el sitio no dependa de listas hardcodeadas
+// que se desincronizan si editas los campos allá. Si falla (p. ej. el token
+// no tiene el scope schema.bases:read), se queda con los valores de config.js.
+async function loadSchemaOptions() {
+  try {
+    const schema = await fetchSchemaOptions();
+    if (schema.businesses?.length) CONFIG.BUSINESSES = schema.businesses;
+    if (schema.statuses?.length) CONFIG.STATUSES = schema.statuses;
+    if (schema.priorities?.length) CONFIG.PRIORITIES = schema.priorities;
+  } catch (err) {
+    console.warn('No se pudo sincronizar opciones con Airtable, usando valores por default:', err.message);
+  }
 }
 
 function cacheEls() {
