@@ -1,0 +1,12 @@
+{
+  "name": "personal-task-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Task manager personal conectado a Airtable, desplegado en Netlify",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}

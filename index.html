@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Manager</title>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <h1>Task Manager</h1>
+    <button id="btn-new-task" class="btn btn-primary">+ Nueva tarea</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-view="dashboard">Dashboard</button>
+    <button class="tab-btn" data-view="business">Por Negocio</button>
+    <button class="tab-btn" data-view="all">Todas las Tareas</button>
+  </nav>
+
+  <main>
+
+    <!-- DASHBOARD VIEW -->
+    <section id="view-dashboard" class="view active">
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-label">Tareas activas</span>
+          <span class="card-value" id="stat-active">-</span>
+        </div>
+        <div class="card card-danger">
+          <span class="card-label">Atrasadas</span>
+          <span class="card-value" id="stat-overdue">-</span>
+        </div>
+        <div class="card">
+          <span class="card-label">Completadas esta semana</span>
+          <span class="card-value" id="stat-completed-week">-</span>
+        </div>
+        <div class="card">
+          <span class="card-label">% Avance</span>
+          <span class="card-value" id="stat-progress">-</span>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="panel">
+          <h2>Carga de trabajo por negocio</h2>
+          <canvas id="chart-workload"></canvas>
+        </div>
+        <div class="panel">
+          <h2>Tareas atrasadas</h2>
+          <div id="overdue-list" class="task-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUSINESS VIEW -->
+    <section id="view-business" class="view">
+      <nav class="business-tabs" id="business-tabs"></nav>
+      <div id="business-content"></div>
+    </section>
+
+    <!-- ALL TASKS VIEW -->
+    <section id="view-all" class="view">
+      <div class="filters-bar">
+        <select id="filter-business">
+          <option value="">Todos los negocios</option>
+        </select>
+        <select id="filter-status">
+          <option value="">Todos los estatus</option>
+        </select>
+        <select id="filter-priority">
+          <option value="">Todas las prioridades</option>
+        </select>
+      </div>
+      <table class="tasks-table">
+        <thead>
+          <tr>
+            <th data-sort="name">Tarea</th>
+            <th data-sort="business">Negocio</th>
+            <th data-sort="status">Estatus</th>
+            <th data-sort="priority">Prioridad</th>
+            <th data-sort="dueDate" class="sortable active">Fecha límite ▲</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="all-tasks-body"></tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <!-- NEW TASK MODAL -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <h2>Nueva tarea</h2>
+      <form id="form-new-task">
+        <label>Nombre
+          <input type="text" id="field-name" required maxlength="200">
+        </label>
+        <label>Negocio
+          <select id="field-business" required></select>
+        </label>
+        <label>Prioridad
+          <select id="field-priority" required></select>
+        </label>
+        <label>Fecha límite
+          <input type="date" id="field-due-date">
+        </label>
+        <label>Notas
+          <textarea id="field-notes" rows="3"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" id="btn-cancel" class="btn">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Crear tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
